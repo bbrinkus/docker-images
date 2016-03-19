@@ -1,0 +1,70 @@
+#!/bin/bash
+
+COLOR_NO="\e[0m"
+COLOR_RED="\e[0;31m"
+COLOR_GREEN="\e[0;32m"
+COLOR_PURPLE="\e[0;35m"
+
+printError() {
+    printf "$COLOR_RED%s$COLOR_NO\n" "Error: $1"
+}
+
+printInfo() {
+    printf "$COLOR_GREEN%s$COLOR_NO\n" "$1"
+}
+
+printInfoLine() {
+    printf "$COLOR_GREEN%s$COLOR_NO " "$1"
+}
+
+printDesc() {
+    printf "$COLOR_PURPLE%s$COLOR_NO\n" "$1"
+}
+
+if [ $# -eq 0 ]
+  then
+    printError "Missing docker image name!"
+    exit;
+fi
+
+CURRENT_FOLDER=$(pwd);
+CONFIG_FILE=${CURRENT_FOLDER}/$1/config
+DOCKER_FILE=${CURRENT_FOLDER}/$1/Dockerfile
+
+config() {
+    if [ -e ${CONFIG_FILE} ]
+    then
+        printInfoLine "Reading configuration files."
+        source ${CONFIG_FILE}
+        printDesc "Done."
+    else
+        printError "Configuration file ${CONFIG_FILE} is missing!"
+        exit
+    fi
+}
+
+build() {
+    for TAG in "${TAGS[@]}"
+    do
+        printInfo "Building ${TAG} images."
+        docker build -t ${TAG} -f ${DOCKER_FILE} .
+        printDesc "Done."
+    done
+}
+
+push() {
+    for TAG in "${TAGS[@]}"
+    do
+        printInfo "Pushing ${TAG} images to the repository."
+        docker push ${TAG}
+        printDesc "Done."
+    done
+}
+
+main() {
+    config
+    build
+    push
+}
+
+main

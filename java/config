@@ -1,0 +1,2 @@
+CONTAINER=bbrinkus/alpine-java
+TAGS=($CONTAINER:8 $CONTAINER:latest)
