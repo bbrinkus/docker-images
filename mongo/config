@@ -1,2 +1,2 @@
 CONTAINER=bbrinkus/alpine-mongodb
-TAGS=($CONTAINER:3.2.4 $CONTAINER:latest)
+TAGS=($CONTAINER:3.2.6 $CONTAINER:latest)
