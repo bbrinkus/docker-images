@@ -1,0 +1,2 @@
+CONTAINER=bbrinkus/alpine-nginx-minimal
+TAGS=($CONTAINER:1.11.9 $CONTAINER:latest)

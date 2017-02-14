@@ -4,6 +4,8 @@ COLOR_NO="\e[0m"
 COLOR_RED="\e[0;31m"
 COLOR_GREEN="\e[0;32m"
 COLOR_PURPLE="\e[0;35m"
+CONFIG_FILE=config
+DOCKER_FILE=Dockerfile
 
 printError() {
     printf "$COLOR_RED%s$COLOR_NO\n" "Error: $1"
@@ -26,10 +28,6 @@ if [ $# -eq 0 ]
     printError "Missing docker image name!"
     exit;
 fi
-
-CURRENT_FOLDER=$(pwd);
-CONFIG_FILE=${CURRENT_FOLDER}/$1/config
-DOCKER_FILE=${CURRENT_FOLDER}/$1/Dockerfile
 
 config() {
     if [ -e ${CONFIG_FILE} ]
@@ -67,4 +65,6 @@ main() {
     push
 }
 
+CURRENT_FOLDER=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd ${CURRENT_FOLDER}/$1
 main
